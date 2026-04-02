@@ -14,15 +14,18 @@ int setup_termios(char* port_name){
 
     struct termios tty;
 
+    //current port setup
     if(tcgetattr(fd, &tty) < 0){
         fprintf(stderr, "Error: Failed to get terminal attributes: %s\n", strerror(errno));
         close(fd);
         return -1;
     }
 
+    //baud rate
     cfsetispeed(&tty, B9600);
     cfsetospeed(&tty, B9600);
 
+    //character size - 8bits per character
     tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
 
     tty.c_iflag = 0;
