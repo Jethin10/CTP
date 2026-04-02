@@ -2,18 +2,27 @@
 #include<unistd.h>
 #include<string.h>
 #include<sys/select.h>
+#include<errno.h>
 #include "../include/packet.h"
 #include "../include/comm.h"
 
 #define FRAME_WAIT_PREAMBLE 0
 #define FRAME_READING       1
+#define MAX_RETRIES        3
 
 void send_frame(int fd, frame_t *f){
+    if(fd < 0 || f == NULL){
+        fprintf(stderr, "Error: Invalid parameters to send_frame\n");
+        return;
+    }
+    
     ssize_t bytes_written = write(fd, f, sizeof(*f));
-    if(bytes_written > 0){
-        printf("Sender: Data sent successfully!\n");
+    if(bytes_written < 0){
+        fprintf(stderr, "Error: Failed to send data: %s\n", strerror(errno));
+    }else if(bytes_written < sizeof(*f)){
+        fprintf(stderr, "Warning: Partial write (%zd/%zu bytes)\n", bytes_written, sizeof(*f));
     }else{
-        printf("Sender: Error Sending data\n");
+        printf("Sender: Data sent successfully!\n");
     }
 }
 
