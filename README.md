@@ -20,20 +20,11 @@
 | Simple Data Transfer          | Send arbitrary payloads reliably over serial   |
 | Partial Read Handling         | State machine approach handles fragmented reads |
 
-## Frame Format
 
-```
-+--------+----------+--------+--------+------+
-| Preamble| Seq No  | Ack No |  Data  | CRC  |
-|  1 byte | 2 bytes | 2 bytes| 512 max| 1byte|
-+--------+----------+--------+--------+------+
-```
+Serial ports - A: 3000 B: 5000
+---
 
-## Architecture
-
-![Alt Text](arch.png)
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Requirements
 - GCC / C compiler  
@@ -41,29 +32,26 @@
 - `socat` (for virtual serial port testing)  
 - `make`  
 
-### Build and Run
+---
+
+## 🔧 Build
 
 ```bash
-# Terminal 1 - Setup virtual serial ports
+cd ctp
 socat -d -d pty,raw,echo=0,link=/tmp/sender pty,raw,echo=0,link=/tmp/receiver
-
-# Terminal 2 - Build and run receiver
 make
 make run-receiver
-
-# Terminal 3 - Run sender
 make run-sender
 ```
 
-## Testing
+## CTP Architecture
 
-```bash
-# Run unit tests
-gcc -I src/include tests/test_protocol.c src/src/crc.c src/src/packet.c -o test_runner
-./test_runner
-```
+![Alt Text](arch.png)
 
-## Contributing
+
+## Readmore here: [CTP Blog](https://meerthika.medium.com/building-a-frame-based-custom-transport-protocol-in-c-2c9fbd404428)
+
+## 🤝 Contributing
 
 We ❤️ contributors!
 
@@ -72,16 +60,9 @@ To contribute:
 1. Fork the repository.
 2. Clone it locally:
    ```bash
-   git clone [your-fork-url]
+   git clone [repo]
    cd ctp
    git checkout -b feature/my-improvement
    ```
-3. Make your changes and submit a pull request.
-
-## Related
-
-[CTP Blog](https://meerthika.medium.com/building-a-frame-based-custom-transport-protocol-in-c-2c9fbd404428)
-
 ## License
-
-MIT - @Meerthika
+@Meerthika
